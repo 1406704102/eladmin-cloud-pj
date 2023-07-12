@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.micah.gateway.mapper.RouterMapper">
+    <resultMap id="routerMap" type="org.micah.gateway.entity.Router">
+        <id property="id" column="id"/>
+        <result property="enable" column="enable"/>
+        <result property="intervalSec" column="interval_sec"/>
+        <result property="routerId" column="router_id"/>
+        <result property="routerName" column="router_name"/>
+        <result property="routerType" column="router_type"/>
+        <result property="routerUrl" column="router_url"/>
+        <result property="threshold" column="threshold"/>
+        <collection property="predicates" resultMap="org.micah.gateway.mapper.PredicateMapper.predicateMap"/>
+        <collection property="filters" resultMap="org.micah.gateway.mapper.FilterMapper.filterMap"/>
+    </resultMap>
+
+    <sql id="baseSql">
+                r.id,
+               r.router_id,
+               router_name,
+               router_type,
+               router_url,
+               r.enable,
+               threshold,
+               interval_sec,
+               f.id as filter_id,
+               filter_name,
+               filter_val,
+               p.id as predicate_id,
+               predicate_name,
+               predicate_val
+        from router r
+                 left join router_filter rf on r.id = rf.router_id
+                 left join filter f on rf.filter_id = f.id
+                 left join router_predicate rp on r.id = rp.router_id
+                 left join predicate p on rp.predicate_id = p.id
+    </sql>
+
+    <select id="selectAll" resultMap="routerMap">
+        select
+            <include refid="baseSql"/>
+    </select>
+
+    <select id="getById" resultMap="routerMap">
+        select
+            <include refid="baseSql"/>
+        <where>
+            r.id = #{id}
+        </where>
+    </select>
+</mapper>
