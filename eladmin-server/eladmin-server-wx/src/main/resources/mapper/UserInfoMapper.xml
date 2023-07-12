@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.pangjie.wx.mapper.UserInfoMapper">
+
+    <resultMap id="UserInfoMap" type="org.micah.model.UserInfo">
+       <id property="id" column="id"/>
+       <result property="id" column="id"/>
+       <result property="openid" column="openid"/>
+       <result property="nickname" column="nickname"/>
+       <result property="userAvatar" column="user_avatar"/>
+       <result property="userPhone" column="user_phone"/>
+       <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="baseSelectSqlWithProperties">
+        ${propertise}.id,
+        ${propertise}.openid,
+        ${propertise}.nickname,
+        ${propertise}.user_avatar,
+        ${propertise}.user_phone,
+        ${propertise}.create_time
+    </sql>
+
+    <sql id="baseSql">
+        id,
+        openid,
+        nickname,
+        user_avatar,
+        user_phone,
+        create_time
+    </sql>
+</mapper>
